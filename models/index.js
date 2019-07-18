@@ -1,6 +1,4 @@
-// Exporting an object containing all of our models
-
-
+//  Exporting all of our models.
 
 module.exports = {
 
