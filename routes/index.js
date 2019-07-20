@@ -49,19 +49,20 @@ router.get("/articles/saved/", function (req, res) {
 // Scrape function
 
 router.get("/scrape", function (req, res) {
-
-
     axios.get("https://longform.org/").then(function (response) {
 
         var $ = cheerio.load(response.data);
+        var articles = $("article");
+        var articlesLength = articles.length;
 
-        $("h3.title").each(function (i, element) {
+        articles.each(function (i, element) {
 
             var result = {};
 
-            result.title = $(this).parent("a").text();
+            result.title = $(this).find("span").text();
 
-            result.link = $(this).parent("a").attr("href");
+            result.link = $(this).find("a").attr("href");
+            console.log(result);
 
             db.Article.create(result)
 
@@ -71,11 +72,15 @@ router.get("/scrape", function (req, res) {
                 })
 
                 .catch(function (err) {
+                    console.log(err);
                     res.writeContinue(err);
                 });
         });
 
-        res.send("Scrape Complete");
+        res.json({ success: true });
+    }).catch(function (err) {
+        console.log(err);
+        res.writeContinue(err);
     });
 });
 
