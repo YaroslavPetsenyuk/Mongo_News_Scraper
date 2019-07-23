@@ -15,6 +15,11 @@ var PORT = process.env.PORT || 3000;
 // Initialize Express
 var app = express();
 
+
+// Set handlebars as the default templating engine
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
+
 // Configure middleware
 
 // Use morgan logger for logging requests
@@ -37,9 +42,6 @@ app.use(express.static(path.join(__dirname, "/public")));
 app.use("/", indexRoutes);
 app.use("/articles", articleRoutes);
 
-// Set handlebars as the default templating engine
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
-app.set("view engine", "handlebars");
 
 // Start Server
 app.listen(PORT, function () {
