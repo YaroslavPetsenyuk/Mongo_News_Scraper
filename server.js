@@ -10,7 +10,7 @@ var path = require("path");
 // Require all models
 var db = require("./models");
 
-var PORT = 3000;
+var PORT = process.env.PORT || 3000;
 
 // Initialize Express
 var app = express();
@@ -26,7 +26,10 @@ app.use(express.json());
 app.use(express.static("public"));
 
 // Connect to the Mongo DB
-mongoose.connect("mongodb://localhost/unit18Populater", { useNewUrlParser: true });
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/unit18Populator";
+
+mongoose.connect(MONGODB_URI);
+
 
 app.use(express.static(path.join(__dirname, "/public")));
 
@@ -39,6 +42,6 @@ app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
 // Start Server
-app.listen(PORT, function() {
+app.listen(PORT, function () {
 	console.log("App running on port " + PORT + "!");
 });
